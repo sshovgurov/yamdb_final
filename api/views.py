@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 
-from rest_framework import filters, status, viewsets, serializers
+from rest_framework import filters, serializers, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import (AllowAny, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
@@ -157,12 +157,10 @@ class CommentViewSet(viewsets.ModelViewSet):
                           | IsAdminOrReadOnly | IsSuperuser]
 
     def get_queryset(self):
-        comments = Comment.objects.filter(review_id=self.get_review())
-        return comments
+        return Comment.objects.filter(review_id=self.get_review())
 
     def get_review(self):
-        review = get_object_or_404(Review, id=self.kwargs.get('review_id'))
-        return review
+        return get_object_or_404(Review, id=self.kwargs.get('review_id'))
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, review_id=self.get_review())
