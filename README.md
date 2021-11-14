@@ -52,3 +52,5 @@ wsl2 (Ubuntu), GitBash, Visual Studio Code, TabNine, Docker
 
 8)Ссылка на DockerHub:
 https://hub.docker.com/repository/docker/sshovgurov/infra_sp2_web
+
+9)Ссылка на сервер:
