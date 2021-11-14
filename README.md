@@ -3,52 +3,59 @@
 Проект Yambd собирает отзывы о фильмах
 Проект развернут на удаленном сервере, с помощью утилиты Ubuntu(WSL2)
 
-1)Если у вас Windows 10, и вы не установили WSL — у вас могут возникнуть проблемы с работой виртуализации системы и при запуске Docker. Установите подсистему Linux по [ссылке](https://docs.microsoft.com/ru-ru/windows/wsl/install) , затем выполняйте установку Docker.
-Зайдите на [официальный сайт](https://www.docker.com/products/docker-desktop) проекта и скачайте установочный файл Docker Desktop для вашей операционной системы. [Docker Compose](https://docs.docker.com/compose) будет установлен автоматически. В Linux убедитесь, что у вас установлена последняя версия [Compose](https://docs.docker.com/compose/install/). Также вы можете воспользоваться официальной [инструкцией](https://docs.docker.com/engine/install/).
-
-2)Клонируйте репозиторий и установите окружение(GitBash)
+1) Выполните вход на свой удаленный сервер с помощью wsl
+Прежде, чем приступать к работе, необходимо выполнить вход на свой удаленный сервер:
 ```bash
-git clone https://github.com/sshovgurov/infra_sp2.git
-python -m venv venv
-pip install -r requirements.txt
+ssh <lusername>@<host>
 ```
 
-3)В корневой папке репозитория создайте файл .env и поместите туда следующий код:
+2) Установите docker и docker-compose на сервер:
+Введите команду:
 ```bash
-SECRET_KEY='p&l%385148kslhtyn^##a1)ilz@4zqj=rq&agdol^##zgl9(vs'
+sudo apt install docker.io
+sudo apt  install docker-compose
+```
+
+3)Скопируйте подготовленные файлы docker-compose.yaml и nginx/default.conf из вашего проекта на сервер
+Введите команду из корневой папки проекта:
+```bash
+scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
+scp -r nginx/ <username>@<host>:/home/<username>/
+```
+
+4)Добавьте в Secrets GitHub Actions переменные окружения для работы базы данных
+```bash
+SECRET_KEY=<SECRET_KEY>
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 DB_HOST=db
 DB_PORT=5432
+DOCKER_USERNAME=<имя пользователя DockerHub>
+DOCKER_PASSWORD=<пароль DockerHub>
+USER=<логин для подключения к серверу>
+HOST=<публичный IP сервера>
+PASSPHRASE=<пароль для входа>
+SSH_KEY=<публичный SSH ключ>
+TELEGRAM_TO=<ID телеграм аккаунта>
+TELEGRAM_TOKEN=<токен вашего бота>
 ```
 
-4)docker-compose (wsl)
-Для развёртывания приложения на основе контейнеров Docker нужно перейти в корневую директорию проекта и оттуда выполнить следующую команду: 
-```bash
-docker-compose up -d
-```
-Остановить работу всех контейнеров можно командой
-```bash
-docker-compose down
-```
 5)Миграции, суперпользователь, загрузка статики (wsl)
 ```bash
-docker-compose exec web python manage.py makemigrations --noinput
-docker-compose exec web python manage.py migrate --noinput
-docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py collectstatic --no-input
-```
-6)Тестирование проекта (bash)
-```bash
-pytest (убедитесь, что установили все необходимые зависимости)
+sudo docker-compose exec web python manage.py makemigrations --noinput
+sudo docker-compose exec web python manage.py migrate --noinput
+sudo docker-compose exec web python manage.py createsuperuser
+sudo docker-compose exec web python manage.py collectstatic --no-input
+sudo docker-compose exec web python manage.py createsuperuser
 ```
 
-7) Технологии
+6) Технологии
 wsl2 (Ubuntu), GitBash, Visual Studio Code, TabNine, Docker
 
-8)Ссылка на DockerHub:
+7)Ссылка на DockerHub:
 https://hub.docker.com/repository/docker/sshovgurov/infra_sp2_web
 
-9)Ссылка на сервер:
+8)Ссылка на сервер:
+http://62.84.122.112/admin/
