@@ -1,10 +1,6 @@
 name: CI #имя workflow, в данном случае - Continuous Integration (англ. «непрерывная интеграция»)
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:
+  [push]
 
 jobs:
   build:
