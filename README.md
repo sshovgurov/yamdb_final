@@ -58,4 +58,4 @@ wsl2 (Ubuntu), GitBash, Visual Studio Code, TabNine, Docker
 https://hub.docker.com/repository/docker/sshovgurov/infra_sp2_web
 
 8)Ссылка на сервер:
-http://62.84.122.112/admin/
+http://51.250.3.62/admin/
