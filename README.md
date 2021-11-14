@@ -33,7 +33,6 @@ docker-compose up -d
 ```bash
 docker-compose down
 ```
-    
 5)Миграции, суперпользователь, загрузка статики (wsl)
 ```bash
 docker-compose exec web python manage.py makemigrations --noinput
